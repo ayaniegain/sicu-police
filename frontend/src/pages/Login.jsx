@@ -46,11 +46,11 @@ function Login() {
     <section className="flex justify-center items-center h-screen bg-gray-100 ">
       <div className="flex w-1/2 bg-white ">
         <div className="side-img">
-          <img src={coverImg} alt="" className="w-full h-[600px]" />
+          <img src={coverImg} alt="" className="w-[90%] h-[600px]" />
         </div>
-        <div className="ml-8 mt-6  ">
+        <div className="ml-4 mt-6  ">
           <div className="form-header flex items-center ">
-            <img src={logo} alt="logo" className="mr-4 h-[60px]" />
+            <img src={logo} alt="logo" className="mr-2 h-[60px]" />
             <div className="form-btn flex justify-center mx-20">
               <div className="flex flex-row justify-center items-center gap-2">
                 <Link to="/signup">SignUp</Link>/
@@ -61,14 +61,14 @@ function Login() {
           </div>
 
           <form className="max-w-md mx-30 mt-6 w-full" onSubmit={loginUser}>
-            <div className="middle  p-14 shadow-right-bottom rounded-md">
-              <h2 className="text-black font-bold text-xl text-center ">
+            <div className="middle  p-10 shadow-right-bottom rounded-lg ">
+              <h2 className="text-black  font-bold text-xl text-center ">
                 Welcome to Sicu-aura
               </h2>
               <p className="text-gray-300 text-[10px] text-center mt-2">
                 Your one stop safety solutions using innovative technology
               </p>
-              <div className="grid grid-cols-1 gap-8">
+              <div className="mt-6 grid grid-cols-1 gap-8">
                 <div className="">
                   <input
                     type="text"
@@ -119,7 +119,7 @@ function Login() {
             <div className="text-center mt-10">
               <button
                 type="submit"
-                className="w-full sm:w-auto px-5 py-1 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
+                className="w-full sm:w-auto px-8 py-1 text-[12px] text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
               >
                 Login
               </button>
