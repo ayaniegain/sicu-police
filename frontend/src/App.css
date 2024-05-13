@@ -1,0 +1,117 @@
+.shadow-right-bottom {
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2); /* Adjust values as needed */
+}
+
+/* Table Styles */
+.table-container {
+  margin: 40px;
+  overflow-x: auto; /* Add overflow-x for horizontal scrolling */
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  white-space: nowrap; /* Prevent word wrapping */
+}
+
+.table th {
+  background: #0df5e3;
+  color: black;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  font-size: 16px; /* Font size for table header */
+}
+
+.table td {
+  padding-left: 20px;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  font-size: 12px; /* Font size for table data */
+}
+
+.table th:first-child {
+  border-top-left-radius: 40px;
+  border-bottom-left-radius: 40px; /* Rounded corner for bottom left */
+  padding-left: 30px;
+}
+
+.table th:last-child {
+  border-top-right-radius: 40px; /* Rounded corner for top right */
+  border-bottom-right-radius: 40px; /* Rounded corner for bottom right */
+  padding-right: 30px;
+}
+
+.table td:first-child {
+  border-left: 1px solid #ccc;
+  border-top-left-radius: 40px; /* Rounded corner for top left */
+  border-bottom-left-radius: 40px; /* Rounded corner for bottom left */
+  padding-left: 30px;
+}
+
+.table td:last-child {
+  border-right: 1px solid #ccc; /* Add right border */
+  border-top-right-radius: 40px; /* Rounded corner for top right */
+  border-bottom-right-radius: 40px; /* Rounded corner for bottom right */
+  padding-right: 30px;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none; /* Remove bottom border for last row */
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+  background-color: #ddd;
+}
+
+.table select {
+  padding: 5px;
+  border-radius: 20px; /* Full rounded corners */
+}
+
+.no-customer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Status Buttons */
+.table select {
+  padding: 5px;
+  border-radius: 20px; /* Full rounded corners */
+}
+
+/* Button Styles */
+.button-pending {
+  background-color: red;
+  color: black;
+}
+
+.button-on-the-way {
+  background-color: yellow;
+}
+
+.button-done {
+  background-color: green;
+}
+
+/* Background image for table body */
+
