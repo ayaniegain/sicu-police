@@ -3,6 +3,11 @@ import brandImg from '../assets/brand-img.png';
 import brandName from '../assets/brand-name.png';
 import user from '../assets/user-icon.png';
 import logo from '../assets/logo.png';
+import backgroundCover from '../assets/brand-logo-background.png';
+import pendingLogo from '../assets/wait-logo.png';
+import arrowLogo from '../assets/arrow-logo.png';
+import onTheWayLogo from '../assets/on-way-logo.png';
+import doneLogo from '../assets/done-logo.png';
 import status from '../assets/status.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -97,13 +102,10 @@ const Home = () => {
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='relative'>
+    <img src={backgroundCover} alt="cover home" className="absolute inset-0 object-cover mx-auto" />
                 {registrations.map(registration => (
-                //   <tr className={`${
-                //     registration.status === 'Pending' ? 'bg-red-500' : 
-                //     registration.status === 'On its way' ? 'bg-yellow-500' : 
-                //     'bg-green-500'
-                // }`}>
+               
                 <tr >
                   <td>{registration.id}</td>
                     <td>{registration.dateTime}</td>
@@ -121,19 +123,72 @@ const Home = () => {
                     <td>{registration.victimtype}</td>
                     <td>{registration.emergencytype}</td>
                     <td>
-                      <select
+                    <select
                         value={selectedOptions[registration._id] || registration.status}
                         onChange={(e) => handleChangeStatus(registration._id, e)}
                         className={`px-2 ${registration.status === 'Pending' ? 'button-pending' : registration.status === 'On its way' ? 'button-on-the-way' : 'button-done'}`}
                       >
-                        <option  className='bg-red-500'  value="Pending">Pending</option>
-                        <option  className='bg-yellow-500' value="On its way">On its way</option>
-                        <option  className='bg-green-500' value="Delivered">Delivered</option>
+                        <option value="Pending" className='bg-red-500'>
+                          <span className="flex items-center justify-center space-x-1">
+                            <img src={pendingLogo} alt="Pending Icon" className="h-4 w-4" />
+                            <span>Pending</span>
+                            <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+                          </span>
+                        </option>
+                        <option value="On its way" className='bg-yellow-500'>
+                          <span className="flex items-center justify-center space-x-1">
+                            <img src={onTheWayLogo} alt="On Its Way Icon" className="h-4 w-4" />
+                            <span>On its way</span>
+                            <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+                          </span>
+                        </option>
+                        <option value="Delivered" className='bg-green-500'>
+                          <span className="flex items-center justify-center space-x-1">
+                            <img src={doneLogo} alt="Delivered Icon" className="h-4 w-4" />
+                            <span>Delivered</span>
+                            <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+                          </span>
+                        </option>
                       </select>
                     </td>
                   </tr>
                 ))}
                 {/* Add blank rows here */}
+
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+                <tr className="h-10 bg-gray-200 text-center">
+    <td colSpan="14" className="py-2"></td>
+  </tr>
+
               </tbody>
             </table>
           </div>

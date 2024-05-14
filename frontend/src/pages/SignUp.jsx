@@ -117,7 +117,7 @@ function SignUp() {
 
   return (
     <section className="flex justify-center items-center h-screen bg-gray-100 ">
-      <div className="flex w-1/2 bg-white">
+      <div className="flex w-[700px] bg-white">
         <div className="side-img">
           <img src={coverImg} alt="" className="w-[90%] h-[600px]" />
         </div>
