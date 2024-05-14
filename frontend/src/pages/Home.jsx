@@ -126,11 +126,11 @@ const Home = () => {
                 </tr>
               </thead>
               
-              <tbody className='relative'>
+              <tbody className='relative bg-slate-400'>
                 <img src={backgroundCover} alt="cover home" className="absolute inset-0 object-cover mx-auto" />
                 {registrations.map(registration => (
-                  <tr key={registration.id}>
-                    <td>{registration.id}</td>
+             <tr key={registration.id} className={`${selectedOptions[registration._id] === 'On its way' ? 'bg-yellow-300' : selectedOptions[registration._id] === 'Delivered' ? 'bg-green-400' : 'bg-white'}`}>
+             <td >{registration.id}</td>
                     <td>{registration.dateTime}</td>
                     <td>{registration.name}</td>
                     <td>
@@ -151,17 +151,18 @@ const Home = () => {
 
                     {
 
-                    <article className={`flex justify-between gap-x-2 flex-row items-center rounded-full py-1.5 px-3 ${selectedOptions[registration._id] === 'Pending' ? 'bg-red-500' : selectedOptions[registration._id] === 'On its way' ? 'bg-yellow-400' : selectedOptions[registration._id] === 'Delivered' ? 'bg-green-500' : ''}`} >
-                    <div className="h-4 w-4">
-                      <img src={selectedOptions[registration._id] === 'Pending' ? pendingLogo : selectedOptions[registration._id] === 'On its way' ? onTheWayLogo : selectedOptions[registration._id] === 'Delivered' ? doneLogo : ''} alt="Status Icon" />
-                    </div>
-                    <div>{selectedOptions[registration._id] || registration.status}</div>
-                    <div>
-                      <div className="h-4 w-4">
-                        <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
-                      </div>
-                    </div>
-                    </article>
+<article className={`flex justify-between gap-x-2 flex-row items-center rounded-full py-1.5 px-3 ${selectedOptions[registration._id] === 'Pending' ? 'bg-red-500' : selectedOptions[registration._id] === 'On its way' ? 'bg-yellow-400' : selectedOptions[registration._id] === 'Delivered' ? 'bg-green-500' : ''} shadow-md`} >
+<div className="h-4 w-4">
+  <img src={selectedOptions[registration._id] === 'Pending' ? pendingLogo : selectedOptions[registration._id] === 'On its way' ? onTheWayLogo : selectedOptions[registration._id] === 'Delivered' ? doneLogo : ''} alt="Status Icon" />
+</div>
+<div>{selectedOptions[registration._id] || registration.status}</div>
+<div>
+  <div className="h-4 w-4">
+    <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+  </div>
+</div>
+</article>
+
                     }
                         {openDropdownId === registration._id && (
                           <section className='absolute top-full  left-0 flex flex-col gap-y-1 bg-white rounded-lg  shadow-md p-2 z-10'>
@@ -206,11 +207,12 @@ const Home = () => {
                     </td>
                   </tr>
                 ))}
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <tr key={index} className="h-10 bg-gray-200 text-center">
-                    <td colSpan="15" className="py-2"></td>
-                  </tr>
-                ))}
+              {Array.from({ length: 14 }).map((_, index) => (
+  <tr key={index} className={`h-10 text-center ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-50'}`}>
+    <td colSpan="15" className="py-2"></td>
+  </tr>
+))}
+
               </tbody>
             </table>
           </div>
