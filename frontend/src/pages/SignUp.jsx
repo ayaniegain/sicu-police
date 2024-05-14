@@ -116,31 +116,37 @@ function SignUp() {
   }
 
   return (
-    <section className="flex justify-center items-center h-screen bg-gray-100 ">
-      <div className="flex w-[700px] bg-white">
-        <div className="side-img">
-          <img src={coverImg} alt="" className="w-[90%] h-[600px]" />
+    <section className="flex flex-row ">
+      {/* <div className="flex w-[700px] bg-white"> */}
+        <div className="side-img flex-none w-30">
+          <img src={coverImg} alt="" className="object-cover h-screen w-[500px]" />
         </div>
-        <div className=" mt-6 w-90  ">
-          <div className="form-header flex items-center ">
+        <div className="flex flex-col justify-center w-full items-center  ">
+          <div className="form-header flex flex-row justify-between gap-x-40 mr-60 ">
             {!videoCam ? (
               <img src={logo} alt="logo" className="mr-4 h-[60px]" />
             ) : (
-              <img src={brandLogo} alt="logo" className="pt-2 h-[60px]" />
+              <img src={brandLogo} alt="logo" className=" h-[60px]" />
             )}
 
-            <div className="form-btn flex justify-center mx-16">
-              <div className="flex flex-row justify-center items-center gap-2">
-                <span className="text-2sm font-bold">Sign Up</span>
-                /<Link to="/login">Login</Link>
-              </div>
-            </div>
+<div className="form-btn flex justify-center items-center gap-2 mr-50">
+            <Link
+              to="/login"
+              className="custom-link-style text-2xl text-gray-400 font-semibold "
+            >
+              Login
+            </Link>
+            /
+            <span className="custom-span-style text-2xl font-semibold">
+              Sign Up
+            </span>
+          </div>
           </div>
 
           {!videoCam ? (
-            <form className=" w-full mt-8" onSubmit={registerUser}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="">
+            <form className="flex flex-col justify-start mr-40 w-1/2 mt-10" onSubmit={registerUser}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="max-w-60">
                   <input
                     type="text"
                     name="psname"
@@ -151,7 +157,7 @@ function SignUp() {
                     required
                   />
                 </div>
-                <div className="">
+                <div className="max-w-60">
                   <input
                     type="email"
                     name="email"
@@ -162,7 +168,7 @@ function SignUp() {
                     required
                   />
                 </div>
-                <div className="">
+                <div className="max-w-60">
                   <input
                     type="text"
                     name="address"
@@ -173,7 +179,7 @@ function SignUp() {
                     required
                   />
                 </div>
-                <div className="">
+                <div className="max-w-60">
                   <input
                     type="number"
                     name="phno"
@@ -184,7 +190,7 @@ function SignUp() {
                     required
                   />
                 </div>
-                <div className="">
+                <div className="max-w-60">
                   <input
                     type="text"
                     name="city"
@@ -195,7 +201,7 @@ function SignUp() {
                     required
                   />
                 </div>
-                <div className="">
+                <div className="max-w-60">
                   <input
                     type="text"
                     name="area"
@@ -206,7 +212,7 @@ function SignUp() {
                     required
                   />
                 </div>
-                <div className="">
+                <div className="max-w-60">
                   <input
                     type="text"
                     name="state"
@@ -217,7 +223,7 @@ function SignUp() {
                     required
                   />
                 </div>
-                <div className="max-w-full">
+                <div className="max-w-60">
                   <input
                     type="text"
                     name="office"
@@ -229,7 +235,7 @@ function SignUp() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-8 mt-6 max-w-36">
+              <div className="grid grid-cols-1 gap-10 mt-9 max-w-60">
                 <div className="">
                   <input
                     type="number"
@@ -267,7 +273,7 @@ function SignUp() {
               <div className="text-center mt-10 ">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-5 py-1 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
+                  className="w-full sm:w-auto px-6 py-1.5 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
                 >
                   Sign Up
                 </button>
@@ -278,29 +284,35 @@ function SignUp() {
             </form>
           ) : (
            
-            <div className="capture-image flex flex-col justify-center items-center mt-16">
-              <p className="text-[12px] mb-6 mr-24">
-                Please Capture our face to continue
-              </p>
+            <div className="capture-image flex flex-col justify-center items-center mt-16 ">
+             <p className="text-xs mb-6 mr-32" style={{ fontFamily: 'Poppins', fontWeight: 600,  textAlign: 'left' }}>
+  Please Capture our face to continue
+</p>
 
-              <div className="bg-gray-400 h-56 rounded-md flex justify-center items-center relative">
+
+              <div className="bg-gray-400 h-64 w-80 rounded-md flex justify-center items-center relative">
+              {!image && (
+
                 <img
                   src={cameraicon}
                   alt="Camera Icon"
                   className="h-10 w-10 absolute inset-0 m-auto"
                 />
+              )}
 
-                <label htmlFor="imageInput" className="cursor-pointer">
+                <label htmlFor="imageInput" className="">
                   {image ? (
                     <img
                       src={image}
                       alt="Camera Icon"
-                      className="h-full w-full cursor-pointer"
+                      className="h-64 w-80"
                     />
                   ) : (
-                    <>
+
+                    
+                    <div className="h-68 w-80">
                       <video id="video" autoPlay muted></video>
-                    </>
+                    </div>
                   )}
                 </label>
               </div>
@@ -309,8 +321,8 @@ function SignUp() {
                 {!image && (
                   <button
                     onClick={handleCaptureImage}
-                    className="w-full bg-black sm:w-auto px-6 py-1 text-[10px] text-center text-white  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
-                  >
+                    className="w-full sm:w-auto px-6 py-1.5 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
+                    >
                     Capture
                   </button>
                 )}
@@ -318,14 +330,14 @@ function SignUp() {
                   <div className=" justify-center mt-10 flex gap-4">
                     <button
                       onClick={handleRetake}
-                      className="w-full bg-black sm:w-auto px-6 py-1 text-[10px] text-center text-white  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
-                    >
+                      className="w-full sm:w-auto px-6 py-1.5 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
+                      >
                       Re-take
                     </button>
                     <button
                       onClick={handleContinue}
-                      className="w-full bg-black sm:w-auto px-6 py-1 text-[10px] text-center text-white  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
-                    >
+                      className="w-full sm:w-auto px-6 py-1.5 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
+                      >
                       Continue
                     </button>
                   </div>
@@ -338,7 +350,7 @@ function SignUp() {
             
           )}
         </div>
-      </div>
+      {/* </div> */}
     </section>
   );
 }

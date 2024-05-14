@@ -157,12 +157,12 @@ app.get('/api/', async (req, res) => {
 app.post('/api/update-status/', async (req, res) => {
     try {
         const { id, status } = req.body;
+        console.log("up:",status);
         const updatedRegistration = await registrationsObj.findOneAndUpdate(
             { _id: new ObjectId(id.toString()) }, // Convert id to string before passing to ObjectId constructor
             { $set: { status } },
             { returnOriginal: false }
         );
-        console.log(updatedRegistration);
         if (updatedRegistration) {
             res.json({ status: 'ok', updatedRegistration });
         } else {
