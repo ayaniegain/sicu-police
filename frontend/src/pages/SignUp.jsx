@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import coverImg from "../assets/background-cover.png";
 import brandLogo from "../assets/capture-logo.png";
 import cameraicon from "../assets/camera-icon.png";
+import validate from '../components/validationSignup';
+
 function SignUp() {
   const [psname, setPsname] = useState("");
   const [address, setAddress] = useState("");
@@ -20,6 +22,8 @@ function SignUp() {
   const [image, setImage] = useState(null);
   const [showRetakeContinue, setShowRetakeContinue] = useState(false);
   const [videoCam, setVideoCam] = useState(false);
+  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
 
   const startCamera = async () => {
@@ -89,6 +93,7 @@ function SignUp() {
         console.log(data);
         if (data.message === "Police Station Name or Email already exists") {
           // alert("Police Station Name or Email already exists");
+          setErrors({ submit: "Police Station Name or Email already exists" });
 
           navigate("/signup");
           setVideoCam(true);
@@ -104,24 +109,51 @@ function SignUp() {
       console.error("Error sending image to backend:", error);
     }
   };
-
   async function registerUser(event) {
     event.preventDefault();
+  
+    // Validate form data
+    const validationData = {
+      psname,
+      address,
+      email,
+      phno,
+      city,
+      areaofaction,
+      state,
+      officerno,
+      pincode,
+      createPassword,
+      password,
+    };
+  
+    const validationErrors = validate(validationData);
+    setErrors(validationErrors);
+  
+    // Check if there are any validation errors
+    if (Object.keys(validationErrors).length > 0) {
+      return; // Prevent form submission if there are errors
+    }
+  
+    // Check if passwords match
     if (password !== createPassword) {
       alert("Passwords do not match");
       return;
     }
+  
+    // Proceed with capturing image
     setVideoCam(true);
     startCamera();
   }
+  
 
   return (
-    <section className="flex flex-row ">
+    <section className="flex  flex-row ">
       {/* <div className="flex w-[700px] bg-white"> */}
         <div className="side-img flex-none w-30">
           <img src={coverImg} alt="" className="object-cover h-screen w-[500px]" />
         </div>
-        <div className="flex flex-col justify-center w-full items-center  ">
+        <div className="flex flex-col  justify-center w-full items-center  ">
           <div className="form-header flex flex-row justify-between gap-x-40 mr-60 ">
             {!videoCam ? (
               <img src={logo} alt="logo" className="mr-4 h-[60px]" />
@@ -144,144 +176,209 @@ function SignUp() {
           </div>
 
           {!videoCam ? (
-            <form className="flex flex-col justify-start mr-40 w-1/2 mt-10" onSubmit={registerUser}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div className="max-w-60">
-                  <input
-                    type="text"
-                    name="psname"
-                    value={psname}
-                    onChange={(e) => setPsname(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Police Station Name"
-                    required
-                  />
-                </div>
-                <div className="max-w-60">
-                  <input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Email ID"
-                    required
-                  />
-                </div>
-                <div className="max-w-60">
-                  <input
-                    type="text"
-                    name="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Address"
-                    required
-                  />
-                </div>
-                <div className="max-w-60">
-                  <input
-                    type="number"
-                    name="phno"
-                    value={phno}
-                    onChange={(e) => setPhno(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Phone Number"
-                    required
-                  />
-                </div>
-                <div className="max-w-60">
-                  <input
-                    type="text"
-                    name="city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="City"
-                    required
-                  />
-                </div>
-                <div className="max-w-60">
-                  <input
-                    type="text"
-                    name="area"
-                    value={areaofaction}
-                    onChange={(e) => setAreaofaction(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Area of Action"
-                    required
-                  />
-                </div>
-                <div className="max-w-60">
-                  <input
-                    type="text"
-                    name="state"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="State"
-                    required
-                  />
-                </div>
-                <div className="max-w-60">
-                  <input
-                    type="text"
-                    name="office"
-                    value={officerno}
-                    onChange={(e) => setOfficerno(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Officers'In-Charges' Number"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-10 mt-9 max-w-60">
-                <div className="">
-                  <input
-                    type="number"
-                    name="pincode"
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Pincode"
-                    value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="">
-                  <input
-                    type="password"
-                    name="create-password"
-                    value={createPassword}
-                    onChange={(e) => setCreatePassword(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Create Password"
-                    required
-                  />
-                </div>
-                <div className="">
-                  <input
-                    type="text"
-                    name="confirm-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full px-0 py-1 text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
-                    placeholder="Confarm Password"
-                    required
-                  />
-                </div>
-              </div>
-              <div className="text-center mt-10 ">
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto px-6 py-1.5 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
+                  <form
+                  className="flex flex-col justify-start mr-40 w-1/2 mt-10"
+                  onSubmit={registerUser}
                 >
-                  Sign Up
-                </button>
-              </div>
-              <p className="text-[10px] text-center text-gray-500 mt-4">
-                Terms and Condition privacy policy
-              </p>
-            </form>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-10">
+                    <div className="max-w-60">
+                      <input
+                        type="text"
+                        name="psname"
+                        value={psname}
+                        onChange={(e) => setPsname(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Police Station Name"
+                        required
+                      />
+                      {errors.psname && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.psname}
+                        </span>
+                      )}
+                    </div>
+                    <div className="max-w-60">
+                      <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Email ID"
+                        required
+                      />
+                      {errors.email && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.email}
+                        </span>
+                      )}
+                    </div>
+                    <div className="max-w-60">
+                      <input
+                        type="text"
+                        name="address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Address"
+                        required
+                      />
+                      {errors.address && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.address}
+                        </span>
+                      )}
+                    </div>
+                    <div className="max-w-60">
+                      <input
+                        type="number"
+                        name="phno"
+                        value={phno}
+                        onChange={(e) => setPhno(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Phone Number"
+                        required
+                      />
+                      {errors.phno && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.phno}
+                        </span>
+                      )}
+                    </div>
+                    <div className="max-w-60">
+                      <input
+                        type="text"
+                        name="city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="City"
+                        required
+                      />
+                      {errors.city && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.city}
+                        </span>
+                      )}
+                    </div>
+                    <div className="max-w-60">
+                      <input
+                        type="text"
+                        name="area"
+                        value={areaofaction}
+                        onChange={(e) => setAreaofaction(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Area of Action"
+                        required
+                      />
+                      {errors.areaofaction && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.areaofaction}
+                        </span>
+                      )}
+                    </div>
+                    <div className="max-w-60">
+                      <input
+                        type="text"
+                        name="state"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="State"
+                        required
+                      />
+                      {errors.state && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.state}
+                        </span>
+                      )}
+                    </div>
+                    <div className="max-w-60">
+                      <input
+                        type="text"
+                        name="office"
+                        value={officerno}
+                        onChange={(e) => setOfficerno(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Officers'In-Charges' Number"
+                        required
+                      />
+                      {errors.officerno && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.officerno}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 gap-10 mt-9 max-w-60">
+                    <div className="">
+                      <input
+                        type="number"
+                        name="pincode"
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Pincode"
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
+                        required
+                      />
+                      {errors.pincode && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.pincode}
+                        </span>
+                      )}
+                    </div>
+                    <div className="">
+                      <input
+                        type="password"
+                        name="create-password"
+                        value={createPassword}
+                        onChange={(e) => setCreatePassword(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Create Password"
+                        required
+                      />
+                      {errors.createPassword && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.createPassword}
+                        </span>
+                      )}
+                    </div>
+                    <div className="">
+                      <input
+                        type="password"
+                        name="confirm-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        placeholder="Confirm Password"
+                        required
+                      />
+                      {errors.password && (
+                        <span className="text-red-500 text-[11px]">
+                          {errors.password}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <span className="">
+
+{errors.submit && <span className="text-red-500 text-[12px]">{errors.submit}</span>}
+ 
+</span>     
+ <div className="text-center mt-10 ">
+
+   <button
+                      type="submit"
+                      className="w-full sm:w-auto px-6 py-1.5 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-center text-gray-500 mt-4">
+                    Terms and Condition privacy policy
+                  </p>
+                </form>
+           
           ) : (
            
             <div className="capture-image flex flex-col justify-center items-center mt-16 ">
