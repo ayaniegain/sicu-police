@@ -1,4 +1,8 @@
+// Home.js
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from "./AuthContext";
 import brandImg from '../assets/brand-img.png';
 import brandName from '../assets/brand-name.png';
 import user from '../assets/user-icon.png';
@@ -9,69 +13,75 @@ import arrowLogo from '../assets/arrow-logo.png';
 import onTheWayLogo from '../assets/on-way-logo.png';
 import doneLogo from '../assets/done-logo.png';
 import status from '../assets/status.png';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useAuth } from "./AuthContext";
-
 
 const Home = () => {
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState([]);
+  const [userData, setUserData] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [openDropdownId, setOpenDropdownId] = useState(null); 
   const dropdownRefs = useRef({}); 
-  const auth = useAuth(); 
+  const auth = useAuth();
 
   useEffect(() => {
-    axios.get('http://localhost:1338/api/')
-      .then(res => {
-        // console.log(res.data);
-        setRegistrations(res.data);
-        // Initialize selectedOptions state based on registration status
-        const initialSelectedOptions = {};
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get('http://localhost:1338/api/user', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setUserData(response.data.user);
+      } catch (error) {
+        console.error('There was an error fetching user data!', error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
+  useEffect(() => {
+    const fetchRegistrations = async () => {
+      try {
+        const res = await axios.get('http://localhost:1338/api/');
+        setRegistrations(res.data);
+        const initialSelectedOptions = {};
         res.data.forEach(registration => {
           initialSelectedOptions[registration._id] = registration.status;
         });
-
         setSelectedOptions(initialSelectedOptions);
-      })
-      .catch(err => {
+      } catch (err) {
         console.log(err);
-        // navigate('/login');
-      });
+        navigate('/login');
+      }
+    };
 
-    // Event listener to handle clicks outside the dropdown
+    fetchRegistrations();
+
     document.addEventListener('mousedown', handleOutsideClick);
-
     return () => {
-      // Clean up event listener
       document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, [navigate]);
 
-  // Function to handle clicks outside the dropdown
   const handleOutsideClick = (e) => {
     if (Object.values(dropdownRefs.current).every(ref => ref && !ref.contains(e.target))) {
       setOpenDropdownId(null);
     }
   };
 
-  // Function to toggle dropdown
   const toggleDropdown = (id) => {
     setOpenDropdownId(openDropdownId === id ? null : id);
   };
 
   const handleChangeStatus = async (id, newStatus) => {
-
-    console.log(id, newStatus)
     setSelectedOptions(prevState => ({
       ...prevState,
       [id]: newStatus
     }));
+
     try {
       await axios.post('http://localhost:1338/api/update-status/', { id, status: newStatus });
-      // Refresh registrations after updating status
       const res = await axios.get('http://localhost:1338/api/');
       setRegistrations(res.data);
     } catch (err) {
@@ -79,12 +89,14 @@ const Home = () => {
     }
   };
 
-  const handlelogout=()=>{
-
+  const handleLogout = () => {
     auth.logout();
-    navigate("/login");
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
-  }
+  const userImageSrc = userData ? userData.image : user;
+
   return (
     <section>
       <div className="navbar flex justify-between items-center bg-custom-201A31 text-white h-24 px-20">
@@ -96,9 +108,9 @@ const Home = () => {
           <h1 className="text-[42px] font-bold" style={{ fontFamily: 'Inter', fontSize: '36px', fontWeight: 600 }}>WELCOME</h1>
         </div>
         <div className="flex items-center gap-2 justify-center">
-          <img src={user} alt="User Logo" className="w-8 h-auto mr-2" />
-          <p className="mr-4">Alex Robinson</p>
-          <button className="bg-black text-white  px-4 py-1.5 rounded-md" onClick={handlelogout}>Log out</button>
+          <img src={userImageSrc} alt="User Logo" className="w-8 h-auto mr-2" />
+          <p className="mr-4">{userData ? userData.psname : 'Loading...'}</p>
+          <button className="bg-black text-white px-4 py-1.5 rounded-md" onClick={handleLogout}>Log out</button>
         </div>
       </div>
 
@@ -169,7 +181,7 @@ const Home = () => {
                           <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
                         </div>
                       </div>
-                      </article>
+                        </article>
 
                     }
                         {openDropdownId === registration._id && (
@@ -183,7 +195,7 @@ const Home = () => {
                               <div>Pending</div>
                               <div>
                                 <div className="h-4 w-4">
-                                  <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+                              <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
                                 </div>
                               </div>
                             </article>
@@ -194,7 +206,7 @@ const Home = () => {
                               <div>On its way</div>
                               <div>
                                 <div className="h-4 w-4">
-                                  <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+                              <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
                                 </div>
                               </div>
                             </article>
@@ -205,7 +217,7 @@ const Home = () => {
                               <div>Delivered</div>
                               <div>
                                 <div className="h-4 w-4">
-                                  <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+                              <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
                                 </div>
                               </div>
                             </article>

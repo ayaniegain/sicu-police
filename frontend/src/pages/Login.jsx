@@ -46,8 +46,8 @@ function Login() {
 
       const data = await response.json();
       if (data.status === "ok") {
-        localStorage.setItem('token', data.token);
-        auth.login(data);
+        localStorage.setItem('token', data.token); //set token to local storage
+        auth.login();
         navigate("/");
       } else {
       setErrors({ submit: "please enter valid email and password" });
