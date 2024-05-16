@@ -12,6 +12,8 @@ function Login() {
   const [spa, setSpa] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const auth = useAuth(); 
+
 
   async function handleLoginUser(event) {
     event.preventDefault();
@@ -45,7 +47,8 @@ function Login() {
 
       const data = await response.json();
       if (data.status === "ok") {
-        useAuth();
+        auth.login();
+
         navigate("/");
       } else {
       setErrors({ submit: "please enter valid email and password" });
