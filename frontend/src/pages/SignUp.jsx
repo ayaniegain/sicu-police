@@ -85,14 +85,14 @@ function SignUp() {
         formData.append("pincode", pincode);
         formData.append("password", password);
 
-        const response = await fetch("http://localhost:8080/api/signup", {
+        const response = await fetch("http://localhost:1338/api/signup", {
           method: "POST",
           body: formData,
         });
         const data = await response.json();
         console.log(data);
         if (data.message === "Police Station Name or Email already exists") {
-          // alert("Police Station Name or Email already exists");
+          // alert("Police Station Name or Email already exists");  
           setErrors({ submit: "Police Station Name or Email already exists" });
 
           navigate("/signup");
@@ -130,38 +130,34 @@ function SignUp() {
     const validationErrors = validate(validationData);
     setErrors(validationErrors);
   
-    // Check if there are any validation errors
     if (Object.keys(validationErrors).length > 0) {
       return; // Prevent form submission if there are errors
     }
   
-    // Check if passwords match
     if (password !== createPassword) {
       alert("Passwords do not match");
       return;
     }
   
-    // Proceed with capturing image
     setVideoCam(true);
     startCamera();
   }
   
 
   return (
-    <section className="flex  flex-row ">
-      {/* <div className="flex w-[700px] bg-white"> */}
+    <section className="flex   flex-row ">
         <div className="side-img flex-none w-30">
           <img src={coverImg} alt="" className="object-cover h-screen w-[500px]" />
         </div>
-        <div className="flex flex-col  justify-center w-full items-center  ">
-          <div className="form-header flex flex-row justify-between gap-x-40 mr-60 ">
+        <div className="flex flex-col  justify-center w-full items-center   ">
+          <div className="form-header flex flex-row justify-between gap-x-40 mr-60 mb-20 ">
             {!videoCam ? (
               <img src={logo} alt="logo" className="mr-4 h-[60px]" />
             ) : (
               <img src={brandLogo} alt="logo" className=" h-[60px]" />
             )}
 
-<div className="form-btn flex justify-center items-center gap-2 mr-50">
+          <div className="form-btn flex justify-center items-center gap-2 mr-50">
             <Link
               to="/login"
               className="custom-link-style text-2xl text-gray-400 font-semibold "
@@ -177,7 +173,7 @@ function SignUp() {
 
           {!videoCam ? (
                   <form
-                  className="flex flex-col justify-start mr-40 w-1/2 mt-10"
+                  className="flex flex-col justify-start mr-40 w-1/2 "
                   onSubmit={registerUser}
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-10">
@@ -187,12 +183,12 @@ function SignUp() {
                         name="psname"
                         value={psname}
                         onChange={(e) => setPsname(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black  border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Police Station Name"
                         required
                       />
                       {errors.psname && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.psname}
                         </span>
                       )}
@@ -203,12 +199,12 @@ function SignUp() {
                         name="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Email ID"
                         required
                       />
                       {errors.email && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.email}
                         </span>
                       )}
@@ -219,12 +215,12 @@ function SignUp() {
                         name="address"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Address"
                         required
                       />
                       {errors.address && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.address}
                         </span>
                       )}
@@ -235,12 +231,12 @@ function SignUp() {
                         name="phno"
                         value={phno}
                         onChange={(e) => setPhno(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Phone Number"
                         required
                       />
                       {errors.phno && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.phno}
                         </span>
                       )}
@@ -251,12 +247,12 @@ function SignUp() {
                         name="city"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="City"
                         required
                       />
                       {errors.city && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.city}
                         </span>
                       )}
@@ -267,12 +263,12 @@ function SignUp() {
                         name="area"
                         value={areaofaction}
                         onChange={(e) => setAreaofaction(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Area of Action"
                         required
                       />
                       {errors.areaofaction && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.areaofaction}
                         </span>
                       )}
@@ -283,12 +279,12 @@ function SignUp() {
                         name="state"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="State"
                         required
                       />
                       {errors.state && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.state}
                         </span>
                       )}
@@ -299,12 +295,12 @@ function SignUp() {
                         name="office"
                         value={officerno}
                         onChange={(e) => setOfficerno(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Officers'In-Charges' Number"
                         required
                       />
                       {errors.officerno && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.officerno}
                         </span>
                       )}
@@ -315,14 +311,14 @@ function SignUp() {
                       <input
                         type="number"
                         name="pincode"
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Pincode"
                         value={pincode}
                         onChange={(e) => setPincode(e.target.value)}
                         required
                       />
                       {errors.pincode && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.pincode}
                         </span>
                       )}
@@ -333,12 +329,12 @@ function SignUp() {
                         name="create-password"
                         value={createPassword}
                         onChange={(e) => setCreatePassword(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Create Password"
                         required
                       />
                       {errors.createPassword && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.createPassword}
                         </span>
                       )}
@@ -349,12 +345,12 @@ function SignUp() {
                         name="confirm-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="block w-full px-0  text-[11px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
+                        className="block w-full px-0  text-[12px] text-black border-b-2 border-gray-300 focus:border-black focus:outline-none"
                         placeholder="Confirm Password"
                         required
                       />
                       {errors.password && (
-                        <span className="text-red-500 text-[11px]">
+                        <span className="text-red-500 text-[12px]">
                           {errors.password}
                         </span>
                       )}
@@ -362,12 +358,12 @@ function SignUp() {
                   </div>
                   <span className="">
 
-{errors.submit && <span className="text-red-500 text-[12px]">{errors.submit}</span>}
- 
-</span>     
- <div className="text-center mt-10 ">
+                      {errors.submit && <span className="text-red-500 text-[11px]">{errors.submit}</span>}
 
-   <button
+                      </span>     
+                       <div className="text-center mt-10 ">
+
+                         <button
                       type="submit"
                       className="w-full sm:w-auto px-6 py-1.5 text-sm text-center text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg"
                     >
@@ -383,8 +379,8 @@ function SignUp() {
            
             <div className="capture-image flex flex-col justify-center items-center mt-16 ">
              <p className="text-xs mb-6 mr-32" style={{ fontFamily: 'Poppins', fontWeight: 600,  textAlign: 'left' }}>
-  Please Capture our face to continue
-</p>
+               Please Capture our face to continue
+              </p>
 
 
               <div className="bg-gray-400 h-64 w-80 rounded-md flex justify-center items-center relative">
@@ -447,7 +443,6 @@ function SignUp() {
             
           )}
         </div>
-      {/* </div> */}
     </section>
   );
 }

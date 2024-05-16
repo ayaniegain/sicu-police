@@ -64,7 +64,7 @@ function Login() {
       <div className="side-img flex-none w-30">
         <img src={coverImg} alt="" className="object-cover h-screen w-[500px]" />
       </div>
-      <div className="flex flex-col justify-center w-full items-center ">
+      <div className="flex flex-col justify-center w-full items-center">
         <div className="flex flex-row justify-between gap-x-40 mr-60">
           <img src={logo} alt="logo" className="h-[60px]" />
           <div className="form-btn flex justify-center items-center gap-2 mr-50">

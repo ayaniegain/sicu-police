@@ -18,8 +18,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [registrations, setRegistrations] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState({});
-  const [openDropdownId, setOpenDropdownId] = useState(null); // State to manage which dropdown is open
-  const dropdownRefs = useRef({}); // Refs for dropdowns
+  const [openDropdownId, setOpenDropdownId] = useState(null); 
+  const dropdownRefs = useRef({}); 
   const auth = useAuth(); 
 
   useEffect(() => {
@@ -84,9 +84,7 @@ const Home = () => {
     auth.logout();
     navigate("/login");
 
-
   }
-
   return (
     <section>
       <div className="navbar flex justify-between items-center bg-custom-201A31 text-white h-24 px-20">
@@ -158,21 +156,20 @@ const Home = () => {
                     <td>{registration.emergencytype}</td>
                     <td>
                       <div className='relative' onClick={() => toggleDropdown(registration._id)} ref={ref => dropdownRefs.current[registration._id] = ref}>
-                        {/* Display the current status as the default selected option */}
 
                     {
 
-<article className={`flex justify-between gap-x-2 flex-row items-center rounded-full py-1.5 px-3 ${selectedOptions[registration._id] === 'Pending' ? 'bg-red-500' : selectedOptions[registration._id] === 'On its way' ? 'bg-yellow-400' : selectedOptions[registration._id] === 'Delivered' ? 'bg-green-500' : ''} shadow-md`} >
-<div className="h-4 w-4">
-  <img src={selectedOptions[registration._id] === 'Pending' ? pendingLogo : selectedOptions[registration._id] === 'On its way' ? onTheWayLogo : selectedOptions[registration._id] === 'Delivered' ? doneLogo : ''} alt="Status Icon" />
-</div>
-<div>{selectedOptions[registration._id] || registration.status}</div>
-<div>
-  <div className="h-4 w-4">
-    <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
-  </div>
-</div>
-</article>
+                      <article className={`flex justify-between gap-x-2 flex-row items-center rounded-full py-1.5 px-3 ${selectedOptions[registration._id] === 'Pending' ? 'bg-red-500' : selectedOptions[registration._id] === 'On its way' ? 'bg-yellow-400' : selectedOptions[registration._id] === 'Delivered' ? 'bg-green-500' : ''} shadow-md`} >
+                      <div className="h-4 w-4">
+                        <img src={selectedOptions[registration._id] === 'Pending' ? pendingLogo : selectedOptions[registration._id] === 'On its way' ? onTheWayLogo : selectedOptions[registration._id] === 'Delivered' ? doneLogo : ''} alt="Status Icon" />
+                      </div>
+                      <div>{selectedOptions[registration._id] || registration.status}</div>
+                      <div>
+                        <div className="h-4 w-4">
+                          <img src={arrowLogo} alt="Arrow Icon" className="h-4 w-4" />
+                        </div>
+                      </div>
+                      </article>
 
                     }
                         {openDropdownId === registration._id && (
@@ -219,11 +216,10 @@ const Home = () => {
                   </tr>
                 ))}
               {Array.from({ length: 14 }).map((_, index) => (
-  <tr key={index} className={`h-10 text-center ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-50'}`}>
-    <td colSpan="15" className="py-2"></td>
-  </tr>
-))}
-
+                  <tr key={index} className={`h-10 text-center ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-50'}`}>
+                    <td colSpan="15" className="py-2"></td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
