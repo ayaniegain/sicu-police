@@ -14,7 +14,6 @@ function Login() {
   const navigate = useNavigate();
   const auth = useAuth(); 
 
-
   async function handleLoginUser(event) {
     event.preventDefault();
 
@@ -37,7 +36,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/login", {
+      const response = await fetch("http://localhost:1338/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,8 +46,8 @@ function Login() {
 
       const data = await response.json();
       if (data.status === "ok") {
-        auth.login();
-
+        localStorage.setItem('token', data.token);
+        auth.login(data);
         navigate("/");
       } else {
       setErrors({ submit: "please enter valid email and password" });

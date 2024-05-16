@@ -11,6 +11,8 @@ import doneLogo from '../assets/done-logo.png';
 import status from '../assets/status.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from "./AuthContext";
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -18,11 +20,12 @@ const Home = () => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [openDropdownId, setOpenDropdownId] = useState(null); // State to manage which dropdown is open
   const dropdownRefs = useRef({}); // Refs for dropdowns
+  const auth = useAuth(); 
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/')
+    axios.get('http://localhost:1338/api/')
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setRegistrations(res.data);
         // Initialize selectedOptions state based on registration status
         const initialSelectedOptions = {};
@@ -67,14 +70,22 @@ const Home = () => {
       [id]: newStatus
     }));
     try {
-      await axios.post('http://localhost:8080/api/update-status/', { id, status: newStatus });
+      await axios.post('http://localhost:1338/api/update-status/', { id, status: newStatus });
       // Refresh registrations after updating status
-      const res = await axios.get('http://localhost:8080/api/');
+      const res = await axios.get('http://localhost:1338/api/');
       setRegistrations(res.data);
     } catch (err) {
       console.error(err);
     }
   };
+
+  const handlelogout=()=>{
+
+    auth.logout();
+    navigate("/login");
+
+
+  }
 
   return (
     <section>
@@ -89,7 +100,7 @@ const Home = () => {
         <div className="flex items-center gap-2 justify-center">
           <img src={user} alt="User Logo" className="w-8 h-auto mr-2" />
           <p className="mr-4">Alex Robinson</p>
-          <button className="bg-black text-white  px-4 py-1.5 rounded-md">Log out</button>
+          <button className="bg-black text-white  px-4 py-1.5 rounded-md" onClick={handlelogout}>Log out</button>
         </div>
       </div>
 

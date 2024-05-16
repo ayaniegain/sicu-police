@@ -6,12 +6,14 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const login = () => {
+  const login = (e) => {
+
     setIsAuthenticated(true);
   };
 
   const logout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem('token');
   };
 
   return (
