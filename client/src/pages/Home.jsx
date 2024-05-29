@@ -13,6 +13,8 @@ import arrowLogo from '../assets/arrow-logo.png';
 import onTheWayLogo from '../assets/on-way-logo.png';
 import doneLogo from '../assets/done-logo.png';
 import status from '../assets/status.png';
+import { fetchRegistrations, fetchUserData } from '../components/centralApi';
+import { useQuery } from '@tanstack/react-query'
 
 const Home = () => {
   const navigate = useNavigate();
@@ -23,57 +25,83 @@ const Home = () => {
   const dropdownRefs = useRef({}); 
   const auth = useAuth();
 
+
+      
+    
+  const {
+    data: userQueryData,
+    error: userError,
+    isLoading: isUserLoading,
+  } = useQuery({
+    queryKey: ["userData"],
+    queryFn: fetchUserData, //react query user data
+    onSuccess: (data) => {
+      setUserData(data);
+    },
+    onError: (error) => {
+      console.error("There was an error fetching user data!", error);
+    },
+  });
   useEffect(() => {
-    const fetchUserData = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await axios.get('http://localhost:1338/api/user', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        setUserData(response.data.user);
-      } catch (error) {
-        console.error('There was an error fetching user data!', error);
-      }
-    };
-    fetchUserData();
-  }, []);
+    if (userQueryData) {
+      setUserData(userQueryData);
+    }
+  }, [userQueryData]);
+      
+
+  
+  const { data: registrationsData, error: registrationsError, isLoading: isRegistrationsLoading } = useQuery({
+    queryKey: ['registrations'],
+    queryFn: fetchRegistrations, //react query registation data
+    onSuccess: (data) => {
+      setRegistrations(data);
+      const initialSelectedOptions = {};
+      data.forEach((registration) => {
+        initialSelectedOptions[registration._id] = registration.status;
+      });
+      setSelectedOptions(initialSelectedOptions);
+    },
+    onError: (error) => {
+      console.error('There was an error fetching registrations!', error);
+      navigate('/login');
+    },
+  });
 
   useEffect(() => {
-    const fetchRegistrations = async () => {
-      try {
-        const res = await axios.get('http://localhost:1338/api/');
-        setRegistrations(res.data);
-        const initialSelectedOptions = {};
-        res.data.forEach(registration => {
-          initialSelectedOptions[registration._id] = registration.status;
-        });
-        setSelectedOptions(initialSelectedOptions);
-      } catch (err) {
-        console.log(err);
-        navigate('/login');
+    if (userQueryData) {
+      setUserData(userQueryData);
+    }
+  }, [userQueryData]);
+
+  useEffect(() => {
+    if (registrationsData) {
+      setRegistrations(registrationsData);
+      const initialSelectedOptions = {};
+      registrationsData.forEach((registration) => {
+        initialSelectedOptions[registration._id] = registration.status;
+      });
+      setSelectedOptions(initialSelectedOptions);
+    }
+  }, [registrationsData]);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (Object.values(dropdownRefs.current).every(ref => ref && !ref.contains(e.target))) {
+        setOpenDropdownId(null);
       }
     };
-
-    fetchRegistrations();
 
     document.addEventListener('mousedown', handleOutsideClick);
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
-  }, [navigate]);
-
-  const handleOutsideClick = (e) => {
-    if (Object.values(dropdownRefs.current).every(ref => ref && !ref.contains(e.target))) {
-      setOpenDropdownId(null);
-    }
-  };
+  }, []);
 
   const toggleDropdown = (id) => {
     setOpenDropdownId(openDropdownId === id ? null : id);
   };
 
+  
   const handleChangeStatus = async (id, newStatus) => {
     setSelectedOptions(prevState => ({
       ...prevState,
@@ -96,28 +124,29 @@ const Home = () => {
   };
 
   const userImageSrc = userData ? userData.image : user;
+  
 
   return (
     <section>
       <div className="navbar flex justify-between items-center bg-custom-201A31 text-white h-24 px-20">
         <div className="brand-image flex justify-center items-center">
-          <img src={brandImg} alt="Brand Logo" className="w-16 h-16" />
-          <img src={brandName} alt="Brand Name" className="w-32 h-7" />
+          <img src={brandImg} alt="Brand Logo" className="w-16 h-16  mr-20 md:block hidden" />
+          <img src={brandName} alt="Brand Name" className="w-32 h-7  mr-20 md:block hidden" />
         </div>
         <div className="welcome">
-          <h1 className="text-[42px] font-bold" style={{ fontFamily: 'Inter', fontSize: '36px', fontWeight: 600 }}>WELCOME</h1>
+          <h1 className="text-[42px] font-bold  mr-20 md:block hidden" style={{ fontFamily: 'Inter', fontSize: '36px', fontWeight: 600 }}>WELCOME</h1>
         </div>
         <div className="flex items-center gap-2 justify-center">
-          <img src={userImageSrc} alt="User Logo" className="w-8 h-auto mr-2" />
-          <p className="mr-4">{userData ? userData.psname : 'Loading...'}</p>
-          <button className="bg-black text-white px-4 py-1.5 rounded-md" onClick={handleLogout}>Log out</button>
+          <img src={userImageSrc} alt="User Logo" className="w-8 h-auto mr-2 " />
+          <p className="mr-4">{userData ? userData.policeStationName : 'Loading...'}</p>
+          <button className="bg-black text-white md:px-4 md:py-1.5 rounded-md  mr-20 px-4 py-2 min-w-[90px]  " onClick={handleLogout}>Log out</button>
         </div>
       </div>
 
       <div className="subNavbar  flex justify-between items-center  h-24 mx-24 py-4">
         <img src={status} alt="Brand Logo" className="h-16 " />
-        <h1 className="text-pink-600 text-4xl font-thin  mr-20" style={{ fontFamily: 'Poppins', color: '#E8246F' }}>Sicu-aura Board</h1>
-        <img src={logo} alt="User Logo" className=" h-16" />
+        <h1 className="text-pink-600 text-4xl font-thin  mr-20 md:block hidden" style={{ fontFamily: 'Poppins', color: '#E8246F' }}>Sicu-aura Board</h1>
+        <img src={logo} alt="User Logo" className=" h-16  mr-20 md:block hidden" />
       </div>
 
       <div>

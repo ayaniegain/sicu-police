@@ -1,37 +1,35 @@
-const { getRegistrationsObj } = require('../models/Registration')
+const Registration = require('../models/registrationModel');
 const ObjectId = require('mongodb').ObjectId;
 
 const updateStatus = async (req, res) => {
     try {
-        const registrationsObj = getRegistrationsObj();
-
-        console.log("registrationsObj",registrationsObj)
         const { id, status } = req.body;
-        const updatedRegistration = await registrationsObj.findOneAndUpdate(
+        const updatedRegistration = await Registration.findByIdAndUpdate(
             { _id: new ObjectId(id) },
-            { $set: { status } },
-            { returnOriginal: false }
+            { status },
+            { new: true } 
         );
-        if (updatedRegistration.value) {
-            res.json({ status: 'ok', updatedRegistration: updatedRegistration.value });
+
+        if (updatedRegistration) {
+            res.json({ status: 'ok', updatedRegistration });
         } else {
             res.status(404).json({ status: 'error', message: 'Registration not found' });
         }
     } catch (err) {
-        console.error(err);
+        console.error('Update status error:', err);
         res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
 };
 
 const fetchRegistrations = async (req, res) => {
     try {
-        const registrationsObj = getRegistrationsObj();
-        const registrations = await registrationsObj.find({}).toArray();
+        const registrations = await Registration.find({});
         res.json(registrations);
     } catch (err) {
-        console.error(err);
+        console.error('Fetch registrations error:', err);
         res.status(500).json({ status: 'error', message: 'Failed to fetch registrations' });
     }
-}
+};
 
 module.exports = { updateStatus, fetchRegistrations };
+

@@ -4,8 +4,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes.js');
 const registrationRoutes = require('./routes/registrationsRoutes.js');
-const { connectToDB } = require('./models/User.js');
-const { connectToDB2 } = require('./models/Registration.js')
+const { connectDB } = require('./config/db.js');
+
 
 const app = express();
 
@@ -19,8 +19,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-connectToDB();
-connectToDB2();
+connectDB();
 
 app.use('/api/', userRoutes);
 app.use('/api/', registrationRoutes);

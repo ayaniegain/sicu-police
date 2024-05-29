@@ -1,27 +1,25 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { jwtSecret } = require('../config/jwt.js');
-const { getUsersObj } = require('../models/User.js');
+const User = require('../models/userModel');
+const axios = require('axios');
 const saltRounds = 10;
 
 const signUp = async (req, res) => {
     try {
-
-        
-        const usersObj = getUsersObj();
         const {
-            psname,
+            policeStationName,
             email,
             address,
-            phno,
+            phoneNumber,
             city,
-            areaofaction,
+            areaOfAction,
             state,
-            officerno,
+            officerPhoneNumber,
             pincode,
             password,
         } = req.body;
-        const existingUser = await usersObj.findOne({ $or: [{ psname }, { email }] });
+
+        const existingUser = await User.findOne({ $or: [{ policeStationName }, { email }] });
         if (existingUser) {
             return res.status(400).json({ message: 'Police Station Name or Email already exists' });
         }
@@ -41,37 +39,36 @@ const signUp = async (req, res) => {
 
         const salt = await bcrypt.genSalt(saltRounds);
         const hashedPassword = await bcrypt.hash(password, salt);
-        await usersObj.insertOne({
-            psname,
+        const newUser = new User({
+            policeStationName,
             email,
             address,
-            phno,
+            phoneNumber,
             city,
-            areaofaction,
+            areaOfAction,
             state,
-            officerno,
+            officerPhoneNumber,
             pincode,
             password: hashedPassword,
             image: image,
         });
 
+        await newUser.save();
         res.json({ status: 'ok' });
     } catch (err) {
-        console.error(err);
+        console.error('Signup error:', err);
         res.status(500).json({ status: 'error', message: 'Failed to register user' });
     }
 };
 
 const login = async (req, res) => {
     try {
-        const usersObj = getUsersObj();
-        const {psname, email, password, spa } = req.body;
-        const user = await usersObj.findOne({ email });
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
         if (user) {
-            //console.log(user)
             const match = await bcrypt.compare(password, user.password);
             if (match) {
-                const token = jwt.sign({ psname: user.psname, image: user.image}, jwtSecret, { expiresIn: '1h' });
+                const token = jwt.sign({ policeStationName: user.policeStationName, image: user.image }, "jwt-key", { expiresIn: '1h' });
                 res.json({ token, status: 'ok' });
             } else {
                 return res.status(400).json({ status: 'error', message: 'Invalid email or password' });
@@ -80,7 +77,7 @@ const login = async (req, res) => {
             return res.status(400).json({ status: 'error', message: 'Invalid email or password' });
         }
     } catch (err) {
-        console.error(err);
+        console.error('Login error:', err);
         res.status(500).json({ status: 'error', message: 'Internal server error' });
     }
 };

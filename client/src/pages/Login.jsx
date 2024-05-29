@@ -4,6 +4,10 @@ import validate from '../components/validattionLogin';
 import coverImg from "../assets/background-cover.png";
 import logo from "../assets/logo.png";
 import { useAuth } from "./AuthContext";
+import { useMutation } from '@tanstack/react-query';
+
+import {login} from "../components/centralApi"
+
 
 function Login() {
   const [psname, setPsname] = useState("");
@@ -13,11 +17,27 @@ function Login() {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const auth = useAuth(); 
+  
+  const mutation = useMutation({
+    mutationFn: login,  // using react query and centralApi
+    onSuccess: (data) => {
+      if (data.status === "ok") {
+        localStorage.setItem('token', data.token);
+        auth.login();
+        navigate("/");
+      } else {
+        setErrors({ submit: "Please enter a valid email and password." });
+      }
+    },
+    onError: (error) => {
+      console.error("Error:", error);
+      setErrors({ submit: "An error occurred. Please try again later." });
+    }
+  });
 
-  async function handleLoginUser(event) {
+  const handleLoginUser = async (event) => {
     event.preventDefault();
 
-    // Create the validation data object
     const validationData = {
       policeStationName: psname,
       email: email,
@@ -25,65 +45,41 @@ function Login() {
       specialCode: spa,
     };
 
-    // Validate the form data
     const validationErrors = validate(validationData);
-    setErrors(validationErrors);
 
-    // Check if there are any validation errors
     if (Object.keys(validationErrors).length > 0) {
-
-      return; // If there are errors, prevent the form from submitting
+      setErrors(validationErrors);
+      return;
     }
 
-    try {
-      const response = await fetch("http://localhost:1338/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(validationData),
-      });
-
-      const data = await response.json();
-      if (data.status === "ok") {
-        localStorage.setItem('token', data.token); //set token to local storage
-        auth.login();
-        navigate("/");
-      } else {
-      setErrors({ submit: "please enter valid email and password" });
-
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setErrors({ submit: "An error occurred. Please try again later." });
-    }
+    mutation.mutate(validationData);
   }
 
   return (
     <section className="flex flex-row">
       <div className="side-img flex-none w-30">
-        <img src={coverImg} alt="" className="object-cover h-screen w-[500px]" />
+        <img src={coverImg} alt="" className="object-cover h-screen w-[500px] sm:block hidden" />
       </div>
       <div className="flex flex-col justify-center w-full items-center">
-        <div className="flex flex-row justify-between gap-x-40 mr-60">
-          <img src={logo} alt="logo" className="h-[60px]" />
+        <div className="form-header flex flex-col sm:flex-row sm:justify-center md:justify-between gap-x-40 md:mr-60 md:mt-10 mt-10 mb-20 sm:items-center sm:ml-30">
+          <img src={logo} alt="logo" className="h-[60px] hidden md:block mb-4 sm:mb-0" />
           <div className="form-btn flex justify-center items-center gap-2 mr-50">
-            <Link to="/signup" className="custom-link-style text-2xl text-gray-400 font-semibold ">
+            <Link to="/signup" className="custom-link-style text-2xl text-gray-400 font-semibold">
               Sign Up
             </Link>
             /
-            <span className="custom-span-style text-2xl font-semibold">
+            <span className="custom-span-style ml-2 text-2xl font-semibold">
               Login
             </span>
           </div>
         </div>
-        <form className="mt-6 flex flex-col justify-center items-center" onSubmit={handleLoginUser}>
+        <form className="flex flex-col justify-center items-center" onSubmit={handleLoginUser}>
           <div className="middle p-10 shadow-right-bottom rounded-lg">
             <h2 className="text-black font-bold text-xl text-center">
               Welcome to Sicu-aura
             </h2>
             <p className="text-gray-300 text-[10px] text-center mt-2">
-              Your one stop safety solutions using innovative technology
+              Your one-stop safety solutions using innovative technology
             </p>
             <div className="mt-6 grid grid-cols-1 gap-8">
               <div className="">
@@ -137,7 +133,6 @@ function Login() {
             </div>
           </div>
           <span className="mt-2">
-
             {errors.submit && <span className="text-red-500 text-[12px]">{errors.submit}</span>}
           </span>
           <div className="text-center mt-8">
